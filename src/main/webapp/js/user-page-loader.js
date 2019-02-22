@@ -49,7 +49,7 @@ function showMessageFormIfViewingSelf() {
 /** Fetches messages and add them to the page. */
 function fetchMessages() {
   const url = '/messages?user=' + parameterUsername;
-  fetch(url)
+  fetch(url)//GET request
       .then((response) => {
         return response.json();
       })
