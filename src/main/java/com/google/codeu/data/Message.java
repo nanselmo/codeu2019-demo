@@ -34,6 +34,7 @@ public class Message {
     this(UUID.randomUUID(), user, text, System.currentTimeMillis());
   }
 
+ //used in getMessages() in Datastore to create a message once all the attributes are queried
   public Message(UUID id, String user, String text, long timestamp) {
     this.id = id;
     this.user = user;
