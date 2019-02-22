@@ -47,7 +47,6 @@ public class MessageServlet extends HttpServlet {
    */
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-
     response.setContentType("application/json");
 
     String user = request.getParameter("user");
@@ -68,7 +67,6 @@ public class MessageServlet extends HttpServlet {
   /** Stores a new {@link Message}. */
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-
     UserService userService = UserServiceFactory.getUserService();
     if (!userService.isUserLoggedIn()) {
       response.sendRedirect("/index.html");
@@ -76,9 +74,9 @@ public class MessageServlet extends HttpServlet {
     }
 
     String user = userService.getCurrentUser().getEmail();
-    String text = Jsoup.clean(request.getParameter("text"), Whitelist.none());
-
-    Message message = new Message(user, text);
+    String formText = Jsoup.clean(request.getParameter("text"), Whitelist.none());
+    System.out.println("**********The form field with name text had :" + formText);
+    Message message = new Message(user, formText);
     datastore.storeMessage(message);
 
     response.sendRedirect("/user-page.html?user=" + user);
