@@ -18,3 +18,9 @@ indexes:
   - name: user
   - name: timestamp
     direction: desc
+- kind: Book
+  properties:
+  - name: author
+  - name: title
+  - name: votes
+    direction: desc
