@@ -42,7 +42,6 @@ public class Datastore {
     messageEntity.setProperty("user", message.getUser());
     messageEntity.setProperty("text", message.getText());
     messageEntity.setProperty("timestamp", message.getTimestamp());
-
     datastore.put(messageEntity);
   }
 
@@ -78,5 +77,32 @@ public class Datastore {
     }
 
     return messages;
+  }
+
+
+
+  //
+  public List<Book> getBooks() {
+    List<Book> allBooks = new ArrayList<>();
+
+    Query query =
+        new Query("Book")
+            .addSort("votes", SortDirection.DESCENDING);
+    PreparedQuery bookQuery = datastore.prepare(query);
+    for (Entity entity : bookQuery.asIterable()) {
+        System.out.println(entity);
+        String idString = entity.getKey().getName();
+        System.out.println("idString is: " + idString);
+        UUID id = UUID.fromString(idString);
+        String title = (String) entity.getProperty("title");
+        String author = (String) entity.getProperty("author");
+        Integer votes = new Integer(entity.getProperty("votes").toString());
+
+        Book a_book = new Book(id, title, author, votes);
+        allBooks.add(a_book);
+
+    }
+
+    return allBooks;
   }
 }

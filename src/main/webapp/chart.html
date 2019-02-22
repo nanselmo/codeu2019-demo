@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>A New Chart</title>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+
+        function fetchBooks() {
+          fetch("/books")
+              .then((response) => {
+                return response.json();
+              })
+              .then((books_json) => {
+                const bookContainer = document.getElementById('book-list');
+                // if (books_json.length == 0) {
+                //   bookContainer.innerHTML = '<p>There are no books in the DB</p>';
+                // } else {
+                //   bookContainer.innerHTML = '';
+                // }
+                // var book_string = "";
+                // books_json.forEach((book) => {
+                //   book_string = book_string + book.title;
+                //
+                // });
+                bookContainer.innerHTML = books_json
+              });
+        }
+
+        fetchBooks();
+        google.charts.load('current', {packages: ['corechart']});
+        google.charts.setOnLoadCallback(drawChart);
+        function drawChart(){
+          var book_data = new google.visualization.DataTable();
+          //define columns for the DataTable instance
+          book_data.addColumn('string', 'Book Title');
+          book_data.addColumn('number', 'Votes');
+
+          //add data to book_data
+          book_data.addRows([
+              ["The Best We Could Do", 6],
+              ["Sing, Unburied, Sing", 10],
+              ["The Book of Unknown Americans", 7],
+              ["The 57 Bus", 4],
+              ["The Handmaid's Tale", 8]
+          ]);
+          var chart = new google.visualization.BarChart(document.getElementById('book_chart'));
+          var chart_options = {
+                          width: 800,
+                          height: 400
+            };
+          chart.draw(book_data, chart_options);
+
+        }
+    </script>
+  </head>
+  <body>
+    <h1>Chart Project</h1>
+    <div id="book_chart"> </div>
+    <div id="book-list"> </div>
+  </body>
+</html>
