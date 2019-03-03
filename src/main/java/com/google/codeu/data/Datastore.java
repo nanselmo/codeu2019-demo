@@ -59,25 +59,7 @@ public class Datastore {
 
 
 
-   public void getMessagesOverTime(){
-      //create a new query
-      Query msgQuery = new Query("Message");
-
-      //make it a projection query
-      //(only grab the keys we want AND assign them to a type)
-      msgQuery.addProjection(new PropertyProjection("user", String.class));
-      msgQuery.addProjection(new PropertyProjection("timestamp", Date.class));
-
-      //store the results in a variable called msgInfo
-      PreparedQuery msgInfo = datastore.prepare(msgQuery);
-
-      //iterate through the messages and print each property
-      for (Entity entity : msgInfo.asIterable()){
-        System.out.println((String) entity.getProperty("user"));
-        System.out.println((Date) entity.getProperty("timestamp"));
-
-      }
-   }
+  
 
   public List<Message> getMessages(String recipient) {
   List<Message> messages = new ArrayList<>();
