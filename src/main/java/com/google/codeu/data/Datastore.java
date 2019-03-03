@@ -24,9 +24,12 @@ import com.google.appengine.api.datastore.Query;
 import com.google.appengine.api.datastore.Query.FilterOperator;
 import com.google.appengine.api.datastore.Query.SortDirection;
 import com.google.appengine.api.datastore.FetchOptions;
+import com.google.appengine.api.datastore.PropertyProjection;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.Date;
+import java.util.HashMap;
 
 /** Provides access to the data stored in Datastore. */
 public class Datastore {
@@ -53,13 +56,34 @@ public class Datastore {
    * @return a list of messages posted by the user, or empty list if user has never posted a
    *     message. List is sorted by time descending.
    */
+
+
+
+   public void getMessagesOverTime(){
+
+      Query msgQuery = new Query("Message");
+      msgQuery.addProjection(new PropertyProjection("user", String.class));
+      msgQuery.addProjection(new PropertyProjection("timestamp", Date.class));
+
+      PreparedQuery msgInfo = datastore.prepare(msgQuery);
+
+      for (Entity entity : msgInfo.asIterable()){
+        System.out.println((String) entity.getProperty("user"));
+        System.out.println((Date) entity.getProperty("timestamp"));
+
+      }
+   }
+
   public List<Message> getMessages(String recipient) {
   List<Message> messages = new ArrayList<>();
-
   Query query =
       new Query("Message")
-          .setFilter(new Query.FilterPredicate("recipient", FilterOperator.EQUAL, recipient))
           .addSort("timestamp", SortDirection.DESCENDING);
+
+  if(recipient!=null){
+    query.setFilter(new Query.FilterPredicate("recipient", FilterOperator.EQUAL, recipient));
+  }
+
   PreparedQuery results = datastore.prepare(query);
 
   for (Entity entity : results.asIterable()) {
