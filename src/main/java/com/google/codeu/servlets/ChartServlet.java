@@ -29,7 +29,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.jsoup.Jsoup;
 import org.jsoup.safety.Whitelist;
-import java.util.HashMap;
+
 
 
 /** Handles fetching and saving {@link Message} instances. */
@@ -50,11 +50,10 @@ public class ChartServlet extends HttpServlet {
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
     response.setContentType("application/json");
-
-     datastore.getMessagesOverTime();
-
-
-    response.getWriter().println("done son");
+    List<Message> msgList = datastore.getMessages(null);
+    Gson gson = new Gson();
+    String json = gson.toJson(msgList);
+    response.getWriter().println(json);
   }
 
 
